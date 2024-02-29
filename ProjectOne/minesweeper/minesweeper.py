@@ -107,6 +107,8 @@ class Sentence():
         """
         if len(self.cells) == self.count:
             return self.cells
+        else:
+            return set()
 
     def known_safes(self):
         """
@@ -114,6 +116,8 @@ class Sentence():
         """
         if self.count == 0:
             return self.cells
+        else:
+            return set()
 
     def mark_mine(self, cell):
         """
@@ -188,14 +192,12 @@ class MinesweeperAI():
         """
         Updates knowledge base by making inferences and marking cells.
         """
-        sentences_to_remove = []
         new_safes = set()
         new_mines = set()
 
         for sentence in self.knowledge:
             if len(sentence.cells) == 0:
-                sentences_to_remove.append(sentence)
-                continue
+                self.knowledge.remove(sentence)
 
             if sentence.count == 0:
                 new_safes.update(sentence.cells)
@@ -208,7 +210,7 @@ class MinesweeperAI():
         for cell in new_mines:
             self.mark_mine(cell)
 
-        self.knowledge = [sentence for sentence in self.knowledge if sentence not in sentences_to_remove]
+        self.knowledge = [sentence for sentence in self.knowledge]
 
     def add_knowledge(self, cell, count):
         """
